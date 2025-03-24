@@ -1,4 +1,4 @@
-# Next Token Prediction: Baseline & Transformer (Single Notebook)
+# Next Token Prediction: Baseline & Transformer
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](#)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](#)
