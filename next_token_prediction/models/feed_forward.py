@@ -82,4 +82,13 @@ class FeedForwardNN(nn.Module):
             if 'weight' in name:
                 nn.init.normal_(param.data, mean=0, std=0.01)
             elif 'bias' in name:
-                nn.init.constant_(param.data, 0) 
+                nn.init.constant_(param.data, 0)
+                
+    def is_using_gpu(self):
+        """
+        Check if the model is using GPU.
+        
+        Returns:
+            bool: True if model parameters are on GPU, False otherwise
+        """
+        return next(self.parameters()).is_cuda 

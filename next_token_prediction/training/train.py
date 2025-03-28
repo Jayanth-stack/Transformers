@@ -31,8 +31,26 @@ def train_epoch(model, dataloader, criterion, optimizer, device):
     total_loss = 0.0
     start_time = time.time()
     
+    # Check if model is on the correct device
+    if next(model.parameters()).device != device:
+        print(f"Warning: Model is on {next(model.parameters()).device}, but specified device is {device}")
+        print("Moving model to the correct device")
+        model = model.to(device)
+    else:
+        print(f"Model is correctly on device: {next(model.parameters()).device}")
+    
     for i, (inputs, targets) in enumerate(dataloader):
+        # Check if tensors are on the correct device (only for the first batch)
+        if i == 0:
+            print(f"Input tensor device: {inputs.device}")
+            print(f"Target tensor device: {targets.device}")
+            
         inputs, targets = inputs.to(device), targets.to(device)
+        
+        # Confirm tensors moved to correct device (only for the first batch)
+        if i == 0:
+            print(f"After moving - Input tensor device: {inputs.device}")
+            print(f"After moving - Target tensor device: {targets.device}")
         
         # Forward pass
         outputs = model(inputs)

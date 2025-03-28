@@ -103,4 +103,13 @@ class TransformerModel(nn.Module):
         Returns:
             int: Number of trainable parameters
         """
-        return sum(p.numel() for p in self.parameters() if p.requires_grad) 
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)
+        
+    def is_using_gpu(self):
+        """
+        Check if the model is using GPU.
+        
+        Returns:
+            bool: True if model parameters are on GPU, False otherwise
+        """
+        return next(self.parameters()).is_cuda 

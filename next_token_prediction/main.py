@@ -66,8 +66,23 @@ def main():
     # Parse arguments
     args = parse_args()
     
-    # Set device
-    device = torch.device(args.device if torch.cuda.is_available() and args.device == 'cuda' else 'cpu')
+    # Check GPU availability and print GPU info
+    print("\n===== GPU Information =====")
+    if torch.cuda.is_available():
+        device = torch.device(args.device if args.device == 'cuda' else 'cpu')
+        if device.type == 'cuda':
+            print(f"CUDA is available! Using GPU: {torch.cuda.get_device_name(0)}")
+            print(f"GPU Device Count: {torch.cuda.device_count()}")
+            print(f"Current CUDA Device: {torch.cuda.current_device()}")
+            # Print GPU memory information
+            print(f"Total GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f} GB")
+            print(f"Available GPU Memory: {torch.cuda.memory_reserved(0) / 1024**3:.2f} GB reserved")
+        else:
+            print("CUDA is available but CPU is being used based on configuration.")
+    else:
+        device = torch.device('cpu')
+        print("CUDA is not available. Using CPU instead.")
+        
     print(f"Using device: {device}")
     
     # Create output directories
@@ -126,6 +141,9 @@ def main():
                                   hidden_dims=FFNN_HIDDEN_DIMS).to(device)
         ffnn_model.init_weights()
         
+        # Verify if the model is on GPU
+        print(f"Is Feed-Forward model on GPU: {ffnn_model.is_using_gpu()}")
+        
         # Count parameters
         ffnn_params = ffnn_model.count_parameters()
         print(f"Feed-Forward model size: {ffnn_params} parameters")
@@ -183,6 +201,9 @@ def main():
             nlayers=TRANSFORMER_NLAYERS, 
             dropout=TRANSFORMER_DROPOUT
         ).to(device)
+        
+        # Verify if the model is on GPU
+        print(f"Is Transformer model on GPU: {transformer_model.is_using_gpu()}")
         
         # Count parameters
         transformer_params = transformer_model.count_parameters()
