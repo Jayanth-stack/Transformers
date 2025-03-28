@@ -27,7 +27,7 @@ TRANSFORMER_DROPOUT = 0.1
 TRANSFORMER_LEARNING_RATE = 0.0001
 
 # Training parameters
-NUM_EPOCHS = 5
+NUM_EPOCHS = 30
 EARLY_STOPPING_PATIENCE = 3
 DEVICE = "cuda"  # or "cpu" if no GPU available
 
